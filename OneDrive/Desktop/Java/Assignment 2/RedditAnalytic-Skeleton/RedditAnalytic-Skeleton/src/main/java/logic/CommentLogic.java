@@ -77,11 +77,12 @@ public class CommentLogic extends GenericLogic<Comment, CommentDAL>{
         Objects.requireNonNull(parameterMap, "parameterMap cannot be null");
         
         // New entity object
-        Comment comment = new Comment();
+        Comment entity = new Comment();
+        
         
         if ( parameterMap.containsKey(ID)) {
             try {
-                entity.setId( Integer.paseInt( parameterMap.get (ID)[0]));
+                entity.setId( Integer.parseInt( parameterMap.get (ID)[0]));
             } catch (java.lang.NumberFormatException ex) {
                 throw new ValidationException (ex);
             }
@@ -105,9 +106,26 @@ public class CommentLogic extends GenericLogic<Comment, CommentDAL>{
         String text = parameterMap.get ( TEXT)[0];
         String created = parameterMap.get (CREATED)[0];
         String is_reply = parameterMap.get ( IS_REPLY)[0];
-     
+        String points = parameterMap.get ( POINTS)[0];
+        String replys = parameterMap.get (REPLYS)[0];
         
-        return null;
+        
+        validator.accept(text, 45);
+        validator.accept(created, 45);
+        validator.accept(is_reply, 45);
+        validator.accept(points, 45);
+        validator.accept(replys, 45);
+        
+        
+        //COVERT ALL THE VALUES (the answer is in line 85)
+        
+        entity.setText(text);
+        entity.setCreated(created);
+        entity.setIsReply(is_reply);
+        entity.setPoints(points);
+        entity.getReplys(replys)
+        
+        return entity;
     }
     
     @Override
