@@ -9,6 +9,9 @@ import common.ValidationException;
 import dal.CommentDAL;
 import dal.DataAccessLayer;
 import entity.Comment;
+import entity.Post;
+import entity.RedditAccount;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -101,29 +104,41 @@ public class CommentLogic extends GenericLogic<Comment, CommentDAL>{
             }
         };
         
-        // Get more data for UNIQUE_ID, REDDIT_ACCOUNT_ID, POST_ID? 
+        // Get more for UNIQUE_ID, REDDIT_ACCOUNT_ID, POST_ID
         
         String text = parameterMap.get ( TEXT)[0];
         String created = parameterMap.get (CREATED)[0];
         String is_reply = parameterMap.get ( IS_REPLY)[0];
         String points = parameterMap.get ( POINTS)[0];
         String replys = parameterMap.get (REPLYS)[0];
-        
+        String unique_id = parameterMap.get ( UNIQUE_ID)[0];
+        String reddit_account_id = parameterMap.get (REDDIT_ACCOUNT_ID)[0];
+        String post_id = parameterMap.get ( POST_ID)[0];
         
         validator.accept(text, 45);
         validator.accept(created, 45);
         validator.accept(is_reply, 45);
         validator.accept(points, 45);
         validator.accept(replys, 45);
+        validator.accept(unique_id, 45);
+        validator.accept(reddit_account_id, 45);
+        validator.accept(post_id, 45);
+       
         
-        
-        //COVERT ALL THE VALUES (the answer is in line 85)
+        //COVERT ALL THE VALUES 
         
         entity.setText(text);
-        entity.setCreated(created);
-        entity.setIsReply(is_reply);
-        entity.setPoints(points);
-        entity.getReplys(replys)
+        entity.setCreated(convertStringToDate(created));
+        entity.setIsReply(Boolean.parseBoolean(is_reply));
+        entity.setPoints(Integer.parseInt(points));
+        entity.setReplys(Integer.parseInt(replys));
+        entity.setUniqueId(unique_id);
+        
+        /*
+        *NEEDS TO BE FINISHED. NEED WORKING POST CLASS
+        */
+       // entity.setRedditAccountId((RedditAccount)reddit_account_id);
+       // entity.setPostId((Post)post_id);
         
         return entity;
     }
